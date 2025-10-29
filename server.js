@@ -8,16 +8,27 @@ import webPush from 'web-push';
 import dotenv from 'dotenv';
 dotenv.config();
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://localhost:5173",
+  "https://pwa-frontend-ggh2rege7-manohar-kandulas-projects.vercel.app", // ✅ your Vercel domain
+];
+
 const app = express();
 app.use(bodyParser.json());
 app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://localhost:5173",
-    "https://192.168.72.247:5173"
-  ],
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile Safari or curl)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.warn("❌ CORS blocked request from:", origin);
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   methods: ["GET", "POST"],
-  allowedHeaders: ["Content-Type"]
+  allowedHeaders: ["Content-Type"],
 }));
 
 dotenv.config();
