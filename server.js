@@ -81,14 +81,10 @@ app.post("/sendNotification", async (req, res) => {
   res.status(200).json({ message: "Notifications sent" });
 });
 
-const key = fs.readFileSync('../frontend/localhost+2-key.pem');
-const cert = fs.readFileSync('../frontend/localhost+2.pem');
+const PORT = process.env.PORT || 4000;
 
-const server = https.createServer({ key, cert }, app);
-
-// ✅ Start server
-const PORT =4000;
-
-server.listen(PORT, () => {
-  console.log(`✅ HTTPS backend running on https://192.168.72.247:${PORT}`);
+app.listen(PORT, () => {
+  console.log(`✅ Backend running on port ${PORT}`);
 });
+
+
