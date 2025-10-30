@@ -1,0 +1,16 @@
+name: Keep Render Awake
+
+# Run this every 5 minutes
+on:
+  schedule:
+    - cron: "*/5 * * * *" # every 5 minutes
+  workflow_dispatch: # allows you to run manually too
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Render backend to keep it awake
+        run: |
+          echo "🏓 Pinging Render backend..."
+          curl -s -o /dev/null -w "%{http_code}" https://pwa-backend-5kjr.onrender.com/ || true
