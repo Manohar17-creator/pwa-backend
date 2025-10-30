@@ -51,7 +51,10 @@ app.post("/sendNotification", async (req, res) => {
   const payload = JSON.stringify({ title: "Push Test", body: "Hello from server!" });
   try {
     const notifyAll = subscriptions.map(sub =>
-      webPush.sendNotification(sub, payload)
+      webPush.sendNotification(sub, payload, {
+        TTL: 60,
+        urgency: "high"
+      })
     );
     await Promise.all(notifyAll);
     console.log("📨 Notification sent to all subscribers");
